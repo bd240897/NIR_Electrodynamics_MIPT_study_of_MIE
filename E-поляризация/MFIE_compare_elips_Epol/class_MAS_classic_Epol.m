@@ -1,5 +1,5 @@
 classdef class_MAS_classic_Epol < handle
-% """ Класс для расчета MAS calssic E-pol """
+%% """ Класс для расчета MAS classic E-pol """
 % Пример использования:
     % a = 2;
     % b = 1;
