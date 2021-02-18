@@ -11,6 +11,8 @@ classdef class_MAS_classic_Epol < handle
     % calc_1.calculate_I(N_mas,N_main).write_I_to_file();
     % calc_1.calculate_DA().write_DA_to_file();
     % calc_1.calculate_DE();
+    % I = calc_1.get_I();
+    % DA = calc_1.get_I();
     
     %%  Уже расчитанные значения
     properties
@@ -20,6 +22,7 @@ classdef class_MAS_classic_Epol < handle
         I_real = [];
         Sum_E_mass = [];
         DA = [];
+        dE = []
     end
 %% Параметры элипса и расчета
     properties
@@ -74,6 +77,7 @@ classdef class_MAS_classic_Epol < handle
             end
             
             plot(xAS,zAS, 'xr')
+            title('(MAS classic Epol)');
             
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.a1 = a1;
@@ -105,7 +109,8 @@ classdef class_MAS_classic_Epol < handle
             end
             
             plot(x,z)
-    
+            title('(MAS classic Epol)');
+            
             % Касательная к основному элипсу
             for i = 1 : N_main
                 tx(i) = -a^2*z(i)/sqrt(a^4*z(i)^2+b^4*x(i)^2);
@@ -222,7 +227,7 @@ classdef class_MAS_classic_Epol < handle
             end
 
             % учтем коэф мю0 который му опустили в расчетах - чтоб получить плотность тока к мА
-            I_real = I_real*(1/(120*pi));
+%             I_real = I_real*(1/(120*pi));
 
             for i = 1 : N_main
                 z_m = z(i);
@@ -237,8 +242,8 @@ classdef class_MAS_classic_Epol < handle
 
             figure;
             fig = plot(phi_for_graf_real, abs(I_real), 'r');
-            title('График распределения тока в ВИ'); 
-            xlabel('Координаты центра цилиндрика'); 
+            title('График распределения тока в ВИ (MAS classic Epol)'); 
+            xlabel('Угол'); 
             xlim([0 360])
             ylabel('Плотность тока');
             
@@ -303,7 +308,7 @@ classdef class_MAS_classic_Epol < handle
             % график поля в дальней зоне от угла налюденя (не нормированный)
             figure;
             plot(phi_for_graf_DA ,RCS,'r-');
-            title('График распределения поля в дальней зоне'); 
+            title('График распределения поля в дальней зоне (MAS classic Epol)'); 
             xlim([0 360])
             xlabel('Угол, град'); 
             ylabel('ЭПР');
@@ -311,7 +316,7 @@ classdef class_MAS_classic_Epol < handle
             % ЗАПИШЕМ
             obj.DA = RCS; 
             obj.phi_for_graf_DA = phi_for_graf_DA;
-            obj.Sum_E_mass = Sum_E_mass
+            obj.Sum_E_mass = Sum_E_mass;
         end
  %%       
         % взаписать токи в файл
@@ -402,9 +407,23 @@ classdef class_MAS_classic_Epol < handle
             % график для невязки
             figure;
             plot(count,dE,'r-');
-            title('График невязок'); 
+            title('График невязок (MAS classic Epol)'); 
             xlabel('Номер точки на поверхности цилиндра'); 
             ylabel('Невязка');
+            
+            % ЗАПИШЕМ 
+            obj.dE = dE;
         end
+        
+        %%
+        % получить ток -  GETer
+        function I = get_I(obj)
+            I = obj.I_real;
+        end
+        % получить ЭПР -  GETer
+        function DA = get_DA(obj)
+            DA = obj.DA;
+        end
+        
     end
 end

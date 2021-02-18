@@ -10,10 +10,11 @@ classdef class_MIE_MFIE_E_pol < handle
     % calc_1.calculate_main_ellips(N)
     % calc_1.calculate_I(N).write_I_to_file();
     % calc_1.calculate_DA().write_DA_to_file();
-    
+    % I = calc_1.get_I();
+    % DA = calc_DA.get_I();
     
     %%  Уже расчитанные значения
-    properties
+    properties 
         ellips_main = struct();  
         I_real = [];
         Sum_E_mass = [];
@@ -125,8 +126,9 @@ classdef class_MIE_MFIE_E_pol < handle
 
             % визуализируем tx и tz
             plot(tx, tz, 'rx')
-            compass(tx(1),tz(1))
-
+%             compass(tx(1),tz(1))
+            title('(MIE MFIE Epol)'); 
+            
             delta = dx/2;
                        
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА          
@@ -288,8 +290,8 @@ classdef class_MIE_MFIE_E_pol < handle
 
             figure;
             fig = plot(phi_for_graf_real, abs(I), 'r');
-            title('График распределения тока в ВИ'); 
-            xlabel('Координаты центра цилиндрика'); 
+            title('График распределения тока в ВИ (MIE MFIE Epol)'); 
+            xlabel('Угол'); 
             xlim([0 360])
             ylabel('Плотность тока');
             
@@ -345,8 +347,8 @@ classdef class_MIE_MFIE_E_pol < handle
                         tzn = tz(n);
                         xn = x_midle(n);
                         zn = z_midle(n);
-
-                        Sum_E = Sum_E + k*(120*pi)/4*dx(n)*I_real(n)*exp(cx*xn+cz*zn);      
+                        % ДЕЛИТЬ ЛИ НА 120 ПИ *(120*pi)
+                        Sum_E = Sum_E + k/4*dx(n)*I_real(n)*exp(cx*xn+cz*zn);      
                     end
                     
             Sum_E_mass(p) = Sum_E;
@@ -357,7 +359,7 @@ classdef class_MIE_MFIE_E_pol < handle
             % график поля в дальней зоне от угла налюденя (не нормированный)
             figure;
             plot(phi_for_graf_DA ,RCS,'r-');
-            title('График распределения поля в дальней зоне'); 
+            title('График распределения поля в дальней зоне (MIE MFIE Epol)'); 
             xlim([0 360])
             xlabel('Угол, град'); 
             ylabel('ЭПР');
@@ -384,6 +386,15 @@ classdef class_MIE_MFIE_E_pol < handle
                 fprintf(f02, ' %10.5f %10.5f\n', phi_for_graf_DA(p), DA(p));
             end
             fclose(f02);
+        end
+                %%
+        % получить ток -  GETer
+        function I = get_I(obj)
+            I = obj.I_real;
+        end
+        % получить ЭПР -  GETer
+        function DA = get_DA(obj)
+            DA = obj.DA;
         end
     end
 end
