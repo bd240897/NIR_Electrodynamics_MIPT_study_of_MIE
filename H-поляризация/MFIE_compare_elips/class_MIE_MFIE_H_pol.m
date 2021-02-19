@@ -379,8 +379,12 @@ classdef class_MIE_MFIE_H_pol < handle
             % ÂÛÒÀÙÈÌ
             phi_for_graf_DA = obj.phi_for_graf_DA;
             DA = obj.DA;
+            N = obj.N;
             
-            f02 = fopen('DA_MFIE_MIE_Hpol_elips.dat','w');
+            name_file = strcat('DA_MFIE_MIE_Hpol_elips_', num2str(N),'.dat');
+
+            
+            f02 = fopen(name_file,'w');
             for p = 1 : 721
                 fprintf(f02, ' %10.5f %10.5f\n', phi_for_graf_DA(p), DA(p));
             end
