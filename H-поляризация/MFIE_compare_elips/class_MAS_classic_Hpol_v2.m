@@ -1,12 +1,16 @@
 classdef class_MAS_classic_Hpol_v2 < handle
 % """ Класс для расчета MAS calssic H-pol """
 % Пример использования:
-    % a = class_MAS_classic_Hpol_v2(2,1,0);
-    % a.calculate_mas_ellips(100);
-    % a.calculate_main_ellips(120);
-    % a.calculate_I(100,100).write_I_to_file();
-    % a.calculate_DA().write_DA_to_file();
-    % a.calculate_DE()
+    % a = 2;
+    % b = 1;
+    % phi_grad = 60;
+    % N_mas = 400;
+    % N_main= 100;
+    % calc_1 = class_MAS_classic_Hpol_v2(a,b,phi_grad);
+    % calc_1.calculate_I(N_mas,N_main).write_I_to_file();
+    % calc_1.calculate_DA().write_DA_to_file();
+    % I = calc_1.get_I();
+    % DA = calc_1.get_DA();
     
     %%  Уже расчитанные значения
     properties
@@ -15,6 +19,7 @@ classdef class_MAS_classic_Hpol_v2 < handle
         DA = [];
         ellips_mas = struct();
         ellips_main = struct();  
+        Sum_H_mass = [];
     end
 %% Параметры элипса и расчета
     properties
@@ -273,7 +278,7 @@ classdef class_MAS_classic_Hpol_v2 < handle
                 for n = 1 : N_mas
                    Sum_H = Sum_H + I(n)*exp(cx*xAS(n)+cz*zAS(n)); 
                 end
-
+                Sum_H_mass(p) = Sum_H;
                 RCS(p) = 10*log10((2/pi)*Sum_H*conj(Sum_H));
 
             end
@@ -289,6 +294,7 @@ classdef class_MAS_classic_Hpol_v2 < handle
             % ЗАПИШЕМ
             obj.DA = RCS; 
             obj.phi_for_graf_DA = phi_for_graf_DA;
+            obj.Sum_H_mass = Sum_H_mass;
         end
  %%       
         % взаписать токи в файл
@@ -393,5 +399,15 @@ classdef class_MAS_classic_Hpol_v2 < handle
             xlabel('Номер точки на поверхности цилиндра'); 
             ylabel('Невязка');
         end
+                %%
+        % получить ток -  GETer
+        function I = get_I(obj)
+            I = obj.I_real;
+        end
+        % получить ЭПР -  GETer
+        function DA = get_DA(obj)
+            DA = obj.DA;
+        end
+        
     end
 end
