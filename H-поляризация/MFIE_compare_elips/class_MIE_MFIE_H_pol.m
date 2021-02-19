@@ -1,5 +1,7 @@
 classdef class_MIE_MFIE_H_pol < handle
 %% """Класс для MIE MFIE H-pol"""
+% 19-02-21
+
 % Пример использования:
     % a = 2;
     % b = 1;
@@ -30,15 +32,10 @@ classdef class_MIE_MFIE_H_pol < handle
         phi_for_graf_real = NaN;
         phi_for_graf_DA = NaN;
     end
-    %% Параметры вспомогательного элипса
-    properties
-        
-    end
 %%  Константы   
     properties
         k = 2*pi;
-        gamma = 1.781072417990;;
-        
+        gamma = 1.781072417990;;        
     end
     
  %%   
@@ -73,8 +70,9 @@ classdef class_MIE_MFIE_H_pol < handle
                 x(i) = a*cosd(delta_phi*(i-1));
             end
 
-            plot(x,z)
-
+%             plot(x,z)
+%             title("Основной эллипс (MIE MFIE Hpol)");
+            
             % Расчет dx для каждого участка
             for i = 1 : N
                 if i == N
@@ -120,13 +118,16 @@ classdef class_MIE_MFIE_H_pol < handle
                     z_midle(i) = (z(i+1)+z(i))/2;
                 end    
             end
-
-            plot(x,z,x_midle, z_midle, 'rx')
-
+            
+%             figure;
+%             plot(x,z,x_midle, z_midle, 'rx')
+%             title('Эллипс и его проксимация (MIE MFIE Hpol)'); 
+            
             % визуализируем tx и tz
-            plot(tx, tz, 'rx')
-%             compass(tx(1),tz(1))
-            title('(MIE MFIE Hpol)'); 
+%             figure;
+%             plot(tx, tz, 'rx')
+% %             compass(tx(1),tz(1))
+%             title('Касательные для элипса (MIE MFIE Hpol)'); 
             
             delta = dx/2;
                        
@@ -142,11 +143,26 @@ classdef class_MIE_MFIE_H_pol < handle
             obj.dx = dx;
             obj.delta = delta;
         end
+%% 
+        % функция для построения графика эллипса 
+        function print_ellips(obj) 
+            % ВЫТАЩИМ
+            x = obj.ellips_main.x;
+            z = obj.ellips_main.z;
+            x_midle = obj.ellips_main.x_midle;
+            z_midle = obj.ellips_main.z_midle;
+            
+            figure;
+            plot(x, z, 'r', x_midle, z_midle, 'b.');
+            title('Основной эллипс и его проксимация (MAS MFIE Hpol)'); 
+
+        end
 %%     
         % расчет токов для данного числа источников и точек на элипсе
         function obj = calculate_I(obj, N)
+            % генерация точек для эллипса
             ellips_main  = obj.calculate_main_ellips(N);
-            % достать параметры от сюда
+
             % достать параметры от сюда
             x_midle = obj.ellips_main.x_midle;
             z_midle = obj.ellips_main.z_midle;
@@ -157,8 +173,11 @@ classdef class_MIE_MFIE_H_pol < handle
             dx = obj.dx;
             k = obj.k;
             phi_grad = obj.phi_grad;
+            
+            % построим эллипс
+            obj.print_ellips()
+            
             % Изучим один цикл
-
             count = 0;
             for m = 1 : N
             %   Координаты в исходной системе координат (в ГСК) 

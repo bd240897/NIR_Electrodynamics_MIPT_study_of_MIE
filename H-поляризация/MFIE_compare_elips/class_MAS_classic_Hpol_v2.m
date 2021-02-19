@@ -1,5 +1,7 @@
 classdef class_MAS_classic_Hpol_v2 < handle
 % """ Класс для расчета MAS calssic H-pol """
+% 19-02-21
+
 % Пример использования:
     % a = 2;
     % b = 1;
@@ -73,7 +75,9 @@ classdef class_MAS_classic_Hpol_v2 < handle
                 zAS(i) = b1*sind(delta_phi*(i-1));
             end
             
-            plot(xAS,zAS, 'xr')
+%             figure;
+%             plot(xAS,zAS, 'xr')
+%             title('Эллипс для ВИ (MAS Hpol)'); 
             
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.a1 = a1;
@@ -104,8 +108,12 @@ classdef class_MAS_classic_Hpol_v2 < handle
                 z(i) = b*sind(delta_phi*(i-1));
             end
             
-            plot(x,z)
-    
+%             figure;
+%             plot(x,z)
+%             figure;
+%             plot(x,z, 'xr')
+%             title('Основной эллипс (MAS Hpol)'); 
+            
             % Касательная к основному элипсу
             for i = 1 : N_main
                 tx(i) = -a^2*z(i)/sqrt(a^4*z(i)^2+b^4*x(i)^2);
@@ -117,6 +125,20 @@ classdef class_MAS_classic_Hpol_v2 < handle
             obj.ellips_main.z = z;
             obj.ellips_main.tx = tx;
             obj.ellips_main.tz = tz;
+        end
+%% 
+        % функция для построения графика эллипсов 
+        function print_ellips(obj) 
+            % ВЫТАЩИМ
+            xAS = obj.ellips_mas.xAS;
+            zAS = obj.ellips_mas.zAS;
+            x = obj.ellips_main.x;
+            z = obj.ellips_main.z;
+            
+            figure;
+            plot(x,z, xAS,zAS, 'xr');
+            title('Основной и вспомогательный эллипс (MAS Hpol)'); 
+
         end
 %%     
         % расчет токов для данного числа источников и точек на элипсе
@@ -141,7 +163,10 @@ classdef class_MAS_classic_Hpol_v2 < handle
             tx = obj.ellips_main.tx;
             tz = obj.ellips_main.tz;
             
-                        % Изучим один цикл
+            % построим эллипс
+            obj.print_ellips()
+            
+            % Изучим один цикл
             % count = 0;
             % пробегаемся по всем точкам оснвого элипса
             for m = 1 : N_main
@@ -228,8 +253,8 @@ classdef class_MAS_classic_Hpol_v2 < handle
 
             figure;
             fig = plot(phi_for_graf_real, abs(I_real), 'r');
-            title('График распределения тока в ВИ'); 
-            xlabel('Координаты центра цилиндрика'); 
+            title('График распределения тока в ВИ (MAS Hpol)'); 
+            xlabel('Угол'); 
             xlim([0 360])
             ylabel('Плотность тока');
             
@@ -286,7 +311,7 @@ classdef class_MAS_classic_Hpol_v2 < handle
             % график поля в дальней зоне от угла налюденя (не нормированный)
             figure;
             plot(phi_for_graf_DA ,RCS,'r-');
-            title('График распределения поля в дальней зоне'); 
+            title('График распределения поля в дальней зоне (MAS Hpol)'); 
             xlim([0 360])
             xlabel('Угол, град'); 
             ylabel('ЭПР');
@@ -395,7 +420,7 @@ classdef class_MAS_classic_Hpol_v2 < handle
             % график для невязки
             figure;
             plot(count,dE,'r-');
-            title('График невязок'); 
+            title('График невязок (MAS Hpol)'); 
             xlabel('Номер точки на поверхности цилиндра'); 
             ylabel('Невязка');
         end
