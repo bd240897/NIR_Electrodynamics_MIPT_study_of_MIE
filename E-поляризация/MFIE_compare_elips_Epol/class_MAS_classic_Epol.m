@@ -1,5 +1,7 @@
 classdef class_MAS_classic_Epol < handle
 %% """ Класс для расчета MAS classic E-pol """
+% 19-02-21
+
 % Пример использования:
     % a = 2;
     % b = 1;
@@ -12,7 +14,7 @@ classdef class_MAS_classic_Epol < handle
     % calc_1.calculate_DA().write_DA_to_file();
     % calc_1.calculate_DE();
     % I = calc_1.get_I();
-    % DA = calc_1.get_I();
+    % DA = calc_1.get_DA();
     
     %%  Уже расчитанные значения
     properties
@@ -76,8 +78,8 @@ classdef class_MAS_classic_Epol < handle
                 zAS(i) = b1*sind(delta_phi*(i-1));
             end
             
-            plot(xAS,zAS, 'xr')
-            title('(MAS classic Epol)');
+%             plot(xAS,zAS, 'xr')
+%             title('(MAS classic Epol)');
             
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.a1 = a1;
@@ -108,9 +110,9 @@ classdef class_MAS_classic_Epol < handle
                 z(i) = b*sind(delta_phi*(i-1));
             end
             
-            plot(x,z)
-            title('(MAS classic Epol)');
-            
+%             plot(x,z)
+%             title('(MAS classic Epol)');
+%             
             % Касательная к основному элипсу
             for i = 1 : N_main
                 tx(i) = -a^2*z(i)/sqrt(a^4*z(i)^2+b^4*x(i)^2);
@@ -123,6 +125,21 @@ classdef class_MAS_classic_Epol < handle
             obj.ellips_main.tx = tx;
             obj.ellips_main.tz = tz;
         end
+%% 
+        % функция для построения графика эллипсов 
+        function print_ellips(obj) 
+            % ВЫТАЩИМ
+            xAS = obj.ellips_mas.xAS;
+            zAS = obj.ellips_mas.zAS;
+            x = obj.ellips_main.x;
+            z = obj.ellips_main.z;
+            
+            figure;
+            plot(x,z, xAS,zAS, 'xr');
+            title('Основной и вспомогательный эллипс (MAS Epol)'); 
+
+        end
+
 %%     
         % расчет токов для данного числа источников и точек на элипсе
         function obj = calculate_I(obj, N_mas, N_main)
@@ -145,6 +162,9 @@ classdef class_MAS_classic_Epol < handle
             z = obj.ellips_main.z;
             tx = obj.ellips_main.tx;
             tz = obj.ellips_main.tz;
+            
+            % построим эллипс
+            obj.print_ellips()
             
             % Изучим один цикл
             % count = 0;

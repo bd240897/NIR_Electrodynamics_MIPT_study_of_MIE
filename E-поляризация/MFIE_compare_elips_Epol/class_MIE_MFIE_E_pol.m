@@ -1,5 +1,7 @@
 classdef class_MIE_MFIE_E_pol < handle
 %% """Класс для MIE MFIE E-pol"""
+% 19-02-21
+
 % Пример использования:
     % a = 2;
     % b = 1;
@@ -11,7 +13,7 @@ classdef class_MIE_MFIE_E_pol < handle
     % calc_1.calculate_I(N).write_I_to_file();
     % calc_1.calculate_DA().write_DA_to_file();
     % I = calc_1.get_I();
-    % DA = calc_DA.get_I();
+    % DA = calc_1.get_DA();
     
     %%  Уже расчитанные значения
     properties 
@@ -74,7 +76,7 @@ classdef class_MIE_MFIE_E_pol < handle
                 x(i) = a*cosd(delta_phi*(i-1));
             end
 
-            plot(x,z)
+%             plot(x,z)
 
             % Расчет dx для каждого участка
             for i = 1 : N
@@ -122,12 +124,12 @@ classdef class_MIE_MFIE_E_pol < handle
                 end    
             end
 
-            plot(x,z,x_midle, z_midle, 'rx')
-
-            % визуализируем tx и tz
-            plot(tx, tz, 'rx')
-%             compass(tx(1),tz(1))
-            title('(MIE MFIE Epol)'); 
+%             plot(x,z,x_midle, z_midle, 'rx')
+% 
+%             % визуализируем tx и tz
+%             plot(tx, tz, 'rx')
+% %             compass(tx(1),tz(1))
+%             title('(MIE MFIE Epol)'); 
             
             delta = dx/2;
                        
@@ -143,9 +145,24 @@ classdef class_MIE_MFIE_E_pol < handle
             obj.dx = dx;
             obj.delta = delta;
         end
+%% 
+        % функция для построения графика эллипса 
+        function print_ellips(obj) 
+            % ВЫТАЩИМ
+            x = obj.ellips_main.x;
+            z = obj.ellips_main.z;
+            x_midle = obj.ellips_main.x_midle;
+            z_midle = obj.ellips_main.z_midle;
+            
+            figure;
+            plot(x, z, 'r', x_midle, z_midle, 'b.');
+            title('Основной эллипс и его проксимация (MAS MFIE Epol)'); 
+
+        end
 %%     
         % расчет токов для данного числа источников и точек на элипсе
         function obj = calculate_I(obj, N)
+            % генерация точек для эллипса
             ellips_main  = obj.calculate_main_ellips(N);
             % достать параметры от сюда
             % достать параметры от сюда
@@ -158,8 +175,11 @@ classdef class_MIE_MFIE_E_pol < handle
             dx = obj.dx;
             k = obj.k;
             phi_grad = obj.phi_grad;
+            
+            % построим эллипс
+            obj.print_ellips()
+            
             % Изучим один цикл
-
             count = 0;
             for m = 1 : N
             %   Координаты в исходной системе координат (в ГСК) 
@@ -371,11 +391,11 @@ classdef class_MIE_MFIE_E_pol < handle
         end
  %%       
         % взаписать токи в файл
-        function obj= write_DA_to_file(obj)
+        function obj= calculate_DE(obj)
         end
  %%       
         % расчитать невязку
-        function obj= calculate_DE(obj)
+        function obj =  write_DA_to_file(obj)
             
             % ВЫТАЩИМ
             phi_for_graf_DA = obj.phi_for_graf_DA;
