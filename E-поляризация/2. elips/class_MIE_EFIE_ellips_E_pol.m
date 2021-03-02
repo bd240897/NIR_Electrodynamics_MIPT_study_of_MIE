@@ -25,8 +25,11 @@ classdef class_MIE_EFIE_ellips_E_pol < handle
     properties 
         ellips_main = struct();  
         I_real = [];
-        Sum_E_mass = [];
         DA = [];
+        % то что будем дсотавать из вне 
+        Sum_E_mass = [];
+        Es = [];
+        Ei = [];
     end
 %% Параметры элипса и расчета
     properties
@@ -319,6 +322,8 @@ classdef class_MIE_EFIE_ellips_E_pol < handle
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.I_real = I; 
             obj.phi_for_graf_real = phi_for_graf_real;
+            obj.Es = Es;
+            obj.Ei = Ei;
             
         end
 %%        
