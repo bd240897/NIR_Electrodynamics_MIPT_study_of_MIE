@@ -134,7 +134,8 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
             figure;
             plot(X, Z, 'b.');
             title('Основной квадрат и его проксимация (MAS EFIE Epol)'); 
-
+            legend('class\_MFIE\_Epol\_sqr');
+            
         end
 %%     
         % расчет токов для данного числа источников и точек на элипсе
@@ -161,99 +162,7 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
             % Изучим один цикл
             count = 0;
             
-%             for m = 1 : 4*N
-%             %   Координаты в исходной системе координат (в ГСК) 
-%             % - т.к. точки находятся в центре отрезков разбиения
-%                 xm = X(m);
-%                 zm = Z(m);
-%                 txm = tx(m);
-%                 tzm = tz(m);
-%                 nxm = nx(m);
-%                 nzm = nz(m);
-% 
-%                 for n = 1 : 4*N
-%                 %   Координаты в исходной системе координат (в ГСК)
-%                     xn = X(n);
-%                     zn = Z(n);
-%                     txn = tx(n);
-%                     tzn = tz(n);
-%                     nxn = nx(n);
-%                     nzn = nz(n);
-% 
-%                 %   Центр новой системы кооридны - начало отрезка (в ГСК)
-%                 %   Давай возьмем середину отрезка
-%                     x_begin_O2 = xn;
-%                     z_begin_O2 = zn;
-% 
-%                 %   Растояние между началом координат О2 и точкой наблюдений (в ГСК)
-%                     x_mO2 = xm - x_begin_O2;
-%                     z_mO2 =  zm - z_begin_O2;
-% 
-%             %       Положим этот вектор на новую СК
-%             %       Координаты этой точки (в ЛСК)
-%                     xmO2 = x_mO2*txn + z_mO2*tzn;
-%                     zmO2 = x_mO2*nxn + z_mO2*nzn;
-% 
-%             %       Т.к. взяли на начало середину отрезка то тут будет
-%                     % координаты в локальных координатах
-%                     umn = xmO2;
-%                     wmn = zmO2;                    
-% 
-%             %       Растояние между m и n (в ГСК)
-%                     xmn = xm - xn;
-%                     zmn = zm - zn;
-%                     r = sqrt(xmn^2 + zmn^2);
-% 
-%             %       Расчет матричных элементов (в ЛСК)
-%                     Hus = 0;
-%                     Hws = 0;
-%                     
-%                     if n == m %r < 0.001*dx 
-% 
-%                         % u - cоставляющая 
-%                         Hus = 0.5;
-% 
-%                         % w - cоставляющая
-%                         Hws = 0;
-% 
-%                     elseif abs(n - m) < 1.5 %r <= 2*dx
-%                         % u - cоставляющая                     
-%                         umn_plus_dx2 = umn + dx/2;
-%                         umn_minus_dx2 = umn - dx/2;
-%                         Hus = (1i/8*wmn*k^2*dx + 1/(2*pi)*(atan(umn_plus_dx2/wmn) - atan(umn_minus_dx2/wmn)));
-% 
-%                         % w - cоставляющая
-%                         r_plus_dx2 = sqrt((umn + dx/2)^2 + wmn^2);
-%                         r_minus_dx2 = sqrt((umn - dx/2)^2 + wmn^2);
-%                         Hws = 1i/4*(besselh(0,1,k*r_plus_dx2) - besselh(0,1,k*r_minus_dx2));
-% 
-%                     else
-%                         % u - cоставляющая
-%                         rmn = sqrt(umn^2 + wmn^2);    
-%                         Hus = 1i/4*k*dx*(wmn/rmn*besselh(1,1,k*rmn));  
-% 
-%                         % w - cоставляющая
-%                         r_plus_dx2 = sqrt((umn + dx/2)^2 + wmn^2);
-%                         r_minus_dx2 = sqrt((umn - dx/2)^2 + wmn^2);
-%                         Hws = 1i/4*(besselh(0,1,k*r_plus_dx2) - besselh(0,1,k*r_minus_dx2));
-%                     end
-% 
-%             %       символ кронкера
-%                     if m == n
-%                         kronker = 1;
-%                     else 
-%                         kronker = 0;
-%                     end
-% 
-%                     % расчет матричнх элементов 
-%                     Zmn(m,n) = kronker + Hus*(nxm*tzn - nzm*txn) + Hws*(nxm*nzn - nzm*nxn);
-% 
-%                 end
-%             end
-
-            count = 0;
             for m = 1 : 4*N
-
             %   Координаты в исходной системе координат (в ГСК) 
             % - т.к. точки находятся в центре отрезков разбиения
                 xm = X(m);
@@ -273,7 +182,7 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
                     nzn = nz(n);
 
                 %   Центр новой системы кооридны - начало отрезка (в ГСК)
-            % Давай возьмем середину отрезка
+                %   Давай возьмем середину отрезка
                     x_begin_O2 = xn;
                     z_begin_O2 = zn;
 
@@ -286,10 +195,10 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
                     xmO2 = x_mO2*txn + z_mO2*tzn;
                     zmO2 = x_mO2*nxn + z_mO2*nzn;
 
-            % Т.к. взяли на начало середину отрезка то тут будет
+            %       Т.к. взяли на начало середину отрезка то тут будет
                     % координаты в локальных координатах
                     umn = xmO2;
-                    wmn = zmO2;
+                    wmn = zmO2;                    
 
             %       Растояние между m и n (в ГСК)
                     xmn = xm - xn;
@@ -297,9 +206,9 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
                     r = sqrt(xmn^2 + zmn^2);
 
             %       Расчет матричных элементов (в ЛСК)
-
                     Hus = 0;
                     Hws = 0;
+                    
                     if n == m %r < 0.001*dx 
 
                         % u - cоставляющая 
@@ -339,9 +248,10 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
 
                     % расчет матричнх элементов 
                     Zmn(m,n) = kronker + Hus*(nxm*tzn - nzm*txn) + Hws*(nxm*nzn - nzm*nxn);
+
                 end
             end
-            
+
             % Расчет падающего поля
             for m= 1 : 4*N
                 nxm = nx(m);
@@ -378,6 +288,7 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
             title('График распределения тока (ток около 2)  - (4)'); 
             xlabel('Периметр'); 
             ylabel('Плотность тока');
+            legend('class\_MFIE\_Epol\_sqr');
             
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.I_real = I; 
@@ -449,6 +360,7 @@ classdef class_MIE_MFIE_sqr_E_pol < handle
             xlim([0 360])
             xlabel('Угол, град'); 
             ylabel('ЭПР');
+            legend('class\_MFIE\_Epol\_sqr');
             
             % ЗАПИШЕМ
             obj.DA = RCS; 

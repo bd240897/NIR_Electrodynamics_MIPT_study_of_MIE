@@ -138,7 +138,7 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
             figure;
             plot(X, Z, 'b.');
             title('Основной квадрат и его проксимация (MAS EFIE Epol)'); 
-
+            legend('class\_EFIE\_Epol\_sqr');
         end
 %% 
         % Генерация D0
@@ -277,6 +277,7 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
             title('График распределения тока (ток около 2)  - (4)'); 
             xlabel('Периметр'); 
             ylabel('Плотность тока');
+            legend('class\_EFIE\_Epol\_sqr');
             
             % ЗАПИШЕМ необходимые параметры из СВ-В КЛАССА
             obj.I_real = I; 
@@ -348,6 +349,7 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
             xlim([0 360])
             xlabel('Угол, град'); 
             ylabel('ЭПР');
+            legend('class\_EFIE\_Epol\_sqr');
             
             % ЗАПИШЕМ
             obj.DA = RCS; 
