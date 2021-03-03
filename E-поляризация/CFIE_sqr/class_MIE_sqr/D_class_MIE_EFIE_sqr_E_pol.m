@@ -3,16 +3,16 @@ classdef D_class_MIE_EFIE_sqr_E_pol < P_class_MIE_sqr
 % 02-03-21
 
 % Пример использования:
-    % as = 1;
-    % phi_grad = 60;
+    % as = 1/pi;
+    % phi_grad = 0;
     % N= 100;
     %     
-    % calc_1 = D_class_MIE_EFIE_sqr_E_pol(as, phi_grad);
-    % calc_1.calculate_main_sqr(N)
-    % calc_1.calculate_I(N).write_I_to_file();
-    % calc_1.calculate_DA().write_DA_to_file();
-    % I = calc_1.get_I();
-    % DA = calc_1.get_DA();
+    % calc_3 = D_class_MIE_EFIE_sqr_E_pol(as, phi_grad);
+    % calc_3.calculate_main_sqr(N)
+    % calc_3.calculate_I().write_I_to_file();
+    % calc_3.calculate_DA().write_DA_to_file();
+    % I3 = calc_1.get_I();
+    % DA3 = calc_1.get_DA();
     
 %% *** СВОЙСТВА КЛАССА ***
 %%  Уже расчитанные значения    
@@ -48,7 +48,9 @@ classdef D_class_MIE_EFIE_sqr_E_pol < P_class_MIE_sqr
         
 %% РАСЧЕТ ТОКОВ       
         % расчет токов для данного числа источников и точек на элипсе
-        function obj = calculate_I(obj, N)
+        function obj = calculate_I(obj)
+            % вытащим N из сохраненых данных
+            N = obj.N;
             
             % Изучим один цикл
             % генерация точек для эллипса
