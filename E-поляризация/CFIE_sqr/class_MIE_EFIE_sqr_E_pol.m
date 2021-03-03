@@ -231,7 +231,7 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
 
             %       Расчет матричных элементов (в ЛСК)
                     if n == m %r < 0.001*dx 
-                        Es(m,n) = D0;
+                        Es(m,n) = 1/4*D0;
 
                     elseif abs(n - m) < 1.5 %r <= 2*dx
                         xmn_plus_delta = (xmnO2) + delta;
@@ -239,11 +239,11 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
                         r_plus_delta = sqrt(xmn_plus_delta^2 + zmnO2^2);
                         r_minus_delta = sqrt(xmn_minus_delta^2 + zmnO2^2);
             %             Es(m,n) = k*dx+k*2*1i/pi*(dx*log(gamma*k/2)-dx*zmn*(atan(xmn_plus_delta/zmn)- atan(xmn_minus_delta/zmn)) + 0.5*xmn_plus_delta*log(r_plus_delta^2)  -  0.5*xmn_minus_delta*log(r_minus_delta^2)- dx);
-                        Es(m,n) = k*dx+k*2*1i/pi*(zmnO2*(atan(xmn_plus_delta/zmnO2) - atan(xmn_minus_delta/zmnO2)) + xmn_plus_delta*log(gamma*k/2*r_plus_delta) - xmn_minus_delta*log(gamma*k/2*r_minus_delta) - dx);
+                        Es(m,n) = 1/4*k*dx+1/4*k*2*1i/pi*(zmnO2*(atan(xmn_plus_delta/zmnO2) - atan(xmn_minus_delta/zmnO2)) + xmn_plus_delta*log(gamma*k/2*r_plus_delta) - xmn_minus_delta*log(gamma*k/2*r_minus_delta) - dx);
 
                     else
                         f2 = besselh(0,1,k*r);
-                        Es(m,n) = k*dx*f2;
+                        Es(m,n) = 1/4*k*dx*f2;
                     end
                 end
             end
@@ -258,7 +258,7 @@ classdef class_MIE_EFIE_sqr_E_pol < handle
                 zm = Z(m);
 
             %   Итоговое падающее поле
-                Ei(m,1) = +4*exp(cx*xm+cz*zm);% падающее поле X
+                Ei(m,1) = +exp(cx*xm+cz*zm);% падающее поле X
             end
 
             % Посчитаем токи и построим график
