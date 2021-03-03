@@ -19,6 +19,9 @@ classdef D_class_MIE_EFIE_sqr_H_pol < P_class_MIE_sqr
     %%  Уже расчитанные значения
     properties 
         % пусто пока что - все есть в родительском классе
+        Sum_H_mass = [];
+        Zmn = [];
+        Ei = [];
     end   
     
 %% *** МЕТОДЫ***
@@ -135,7 +138,7 @@ classdef D_class_MIE_EFIE_sqr_H_pol < P_class_MIE_sqr
                         r_plus_delta = sqrt(xmn_plus_delta^2 + zmnO2^2);
                         r_minus_delta = sqrt(xmn_minus_delta^2 + zmnO2^2);
                         zmn = zmnO2;
-                        Zm = kdx+k*2*1i/pi*(dx*log(gamma*k/2)-dx*zmn*(atan(xmn_plus_delta/zmn)- atan(xmn_minus_delta/zmn)) + 0.5*xmn_plus_delta*log(r_plus_delta^2)  -  0.5* xmn_minus_delta*log(r_minus_delta^2)- dx);
+                        Zm = kdx + k*2*1i/pi*(dx*log(gamma*k/2)-dx*zmn*(atan(xmn_plus_delta/zmn)- atan(xmn_minus_delta/zmn)) + 0.5*xmn_plus_delta*log(r_plus_delta^2)  -  0.5* xmn_minus_delta*log(r_minus_delta^2)- dx);
                     else
                         f2 = besselh(0,1,k*r);
                         Zm = k*dx*f2;
@@ -150,7 +153,7 @@ classdef D_class_MIE_EFIE_sqr_H_pol < P_class_MIE_sqr
                         tx_betven_vectors = txm*txn + tzm*tzn;
                         tz_betven_vectors = txm*nxn + tzm*nzn;
 
-                        Es(m,n) = Esx*tx_betven_vectors + Esz*tz_betven_vectors;
+                        Es(m,n) = 1/4*(Esx*tx_betven_vectors + Esz*tz_betven_vectors);
                 end
             end
 
@@ -165,8 +168,8 @@ classdef D_class_MIE_EFIE_sqr_H_pol < P_class_MIE_sqr
                 tzm = tz(m);
 
             %   Итоговое падающее поел - это суперпозиция полей
-                Eix = +4*1i*sind(phi_grad)*exp(cx*xm+cz*zm);% падающее поле X
-                Eiz = -4*1i*cosd(phi_grad)*exp(cx*xm+cz*zm);% падающее поле Z
+                Eix = +1i*sind(phi_grad)*exp(cx*xm+cz*zm);% падающее поле X
+                Eiz = -1i*cosd(phi_grad)*exp(cx*xm+cz*zm);% падающее поле Z
                 Ei(m,1) = Eix*txm + Eiz*tzm; 
             end
 

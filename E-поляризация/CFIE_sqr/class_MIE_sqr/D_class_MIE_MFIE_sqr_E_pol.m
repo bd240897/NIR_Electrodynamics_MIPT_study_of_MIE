@@ -18,7 +18,9 @@ classdef D_class_MIE_MFIE_sqr_E_pol < P_class_MIE_sqr
 %%  Уже расчитанные значения    
     %%  Уже расчитанные значения
     properties 
-
+        Sum_E_mass = [];
+        Zmn = [];
+        Hi = [];
     end   
     
 %% *** МЕТОДЫ***
