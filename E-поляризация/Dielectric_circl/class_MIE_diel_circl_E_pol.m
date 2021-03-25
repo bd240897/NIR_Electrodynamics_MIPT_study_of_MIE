@@ -263,7 +263,7 @@ classdef class_MIE_diel_circl_E_pol < handle
                         H1w = 0;
                         H2w = 0;
 
-                    elseif abs(n-m) <= -1.5
+                    elseif abs(n-m) <= 1.5
 
                         % электрчиеское поле
                         E1y = k1*dx + k1*2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
