@@ -156,11 +156,33 @@ for m  = 1 : N
             % cоставл€ющие H2u
             he_u2 = -1/2;
             hm_u22 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-            % cоставл€ющие H1w
-            he_w1 = 0;
-            % cоставл€ющие H2w
-            he_w2 = 0;
-
+%             % cоставл€ющие H1w
+%             he_w1 = 0;
+%             % cоставл€ющие H2w
+%             he_w2 = 0;
+            
+        elseif abs(n-m) <= -1.5
+        % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
+            % cоставл€ющие E1y
+            fe_y1 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
+            + umn_plus*log(gamma*k1/2*sqrt(umn_plus^2+wmn^2))...
+            - umn_minus*log(gamma*k1/2*sqrt(umn_minus^2+wmn^2)) - dx);
+            fe_y1 = fe_y1 * 1i/4; % домножение на коэфицент
+            fm_y1 = - (1i/8*wmn*k1^2*dx + 1/(2*pi)*(atan(umn_plus/wmn) - atan(umn_minus/wmn)));
+            % cоставл€ющие E2y
+            fe_y2 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
+            + umn_plus*log(gamma*k2/2*sqrt(umn_plus^2+wmn^2))...
+            - umn_minus*log(gamma*k2/2*sqrt(umn_minus^2+wmn^2)) - dx);
+            fe_y2 = fe_y2 * 1i/4; % домножение на коэфицент
+            fm_y2 = - (1i/8*wmn*k2^2*dx + 1/(2*pi)*(atan(umn_plus/wmn) - atan(umn_minus/wmn)));
+        % ћј√Ќ»“Ќќ≈ ѕќЋ≈
+            % cоставл€ющие H1u
+            he_u1 = fm_y1;
+            hm_u12 = fe_y1;
+            % cоставл€ющие H2u
+            he_u2 = fm_y2;
+            hm_u22 = fe_y2;
+            
         else
         % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
             % cоставл€ющие E1y
@@ -176,10 +198,10 @@ for m  = 1 : N
             % cоставл€ющие H2u
             he_u2 = - 1i/4*k2*dx*(wmn/rmn*H(1,k2*rmn));
             hm_u22 = 1i/4*dx*H(0,k2*rmn);
-            % cоставл€ющие H1w
-            he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
-            % cоставл€ющие H2w
-            he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
+%             % cоставл€ющие H1w
+%             he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
+%             % cоставл€ющие H2w
+%             he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
         end
     % ћј√Ќ»“Ќќ≈ ѕќЋ≈
         % cоставл€ющие H1u
@@ -190,11 +212,14 @@ for m  = 1 : N
         hm_w1 = - 1i/4*k1*(wmn/r_plus*H(1,k1*r_plus) - wmn/r_minus*H(1,k1*r_minus));
         % cоставл€ющие H2w
         hm_w2 = - 1i/4*k2*(wmn/r_plus*H(1,k2*r_plus) - wmn/r_minus*H(1,k2*r_minus));
+            % cоставл€ющие H1w
+            he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
+            % cоставл€ющие H2w
+            he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
+
                
-%%
         %% —ќЅ≈–≈ћ ¬—≈ ¬ћ≈—“≈
-        
-                
+         
         % cоставл€ющие E1y
         E1y = 1i*eta1*k1*fe_y1 - eta1*fm_y1;
         
@@ -213,7 +238,8 @@ for m  = 1 : N
         % cоставл€ющие H2w
         H2w = -1i/(eta2*k2)*hm_w2*eta2 + he_w2;
   
-%%
+        %% –абота с системоу уравнений 
+        
         % элементы системы       
         E1mn = E1y;
         E2mn = -E2y;
