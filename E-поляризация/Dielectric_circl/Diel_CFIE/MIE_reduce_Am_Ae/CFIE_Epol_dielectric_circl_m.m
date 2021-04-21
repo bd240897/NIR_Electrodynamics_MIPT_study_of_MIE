@@ -1,4 +1,7 @@
 %%  ћ»”
+% ћетод интегральны уравнений дл€ диэл круглого цилиндра
+% с использованием 2х векторных потенциалов 
+% 21-04-21
 
 close all;
 clear variables;
@@ -151,17 +154,13 @@ for m  = 1 : N
             fm_y2 = -1/2;
         % ћј√Ќ»“Ќќ≈ ѕќЋ≈
             % cоставл€ющие H1u
-            he_u1 = + 1/2;
-            hm_u12 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k1*dx/4)-1));
+            he_u1 = fm_y1;
+            hm_u12 = fe_y1;
             % cоставл€ющие H2u
-            he_u2 = -1/2;
-            hm_u22 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-%             % cоставл€ющие H1w
-%             he_w1 = 0;
-%             % cоставл€ющие H2w
-%             he_w2 = 0;
-            
-        elseif abs(n-m) <= -1.5
+            he_u2 = fm_y2;
+            hm_u22 = fe_y2;
+   
+        elseif abs(n-m) <= 1.5
         % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
             % cоставл€ющие E1y
             fe_y1 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
@@ -198,10 +197,6 @@ for m  = 1 : N
             % cоставл€ющие H2u
             he_u2 = - 1i/4*k2*dx*(wmn/rmn*H(1,k2*rmn));
             hm_u22 = 1i/4*dx*H(0,k2*rmn);
-%             % cоставл€ющие H1w
-%             he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
-%             % cоставл€ющие H2w
-%             he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
         end
     % ћј√Ќ»“Ќќ≈ ѕќЋ≈
         % cоставл€ющие H1u
@@ -209,15 +204,12 @@ for m  = 1 : N
         % cоставл€ющие H2u
         hm_u21 = - 1i/4*k2*(umn_plus/r_plus*H(1,k2*r_plus) - umn_minus/r_minus*H(1,k2*r_minus));
         % cоставл€ющие H1w
+        he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
         hm_w1 = - 1i/4*k1*(wmn/r_plus*H(1,k1*r_plus) - wmn/r_minus*H(1,k1*r_minus));
         % cоставл€ющие H2w
+        he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
         hm_w2 = - 1i/4*k2*(wmn/r_plus*H(1,k2*r_plus) - wmn/r_minus*H(1,k2*r_minus));
-            % cоставл€ющие H1w
-            he_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
-            % cоставл€ющие H2w
-            he_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
-
-               
+              
         %% —ќЅ≈–≈ћ ¬—≈ ¬ћ≈—“≈
          
         % cоставл€ющие E1y
@@ -296,8 +288,9 @@ plot(phi_circl_grad,  abs(j1), 'r',phi_circl_grad, abs(j2), 'b');
 
 % пол€рный графки токов
 polarplot(phi_circl_rad, abs(j1), 'r',phi_circl_rad, abs(j2), 'b');
-%% Ёѕ–
 
+
+%% Ёѕ–
 for p = 1 : 721
     Sum_E = 0;
     phi = (p-1)/2; % угол из формулы дл€ приведени€ 721 к 360 градусам
@@ -330,7 +323,7 @@ xlim([0 360])
 xlabel('”гол, град'); 
 ylabel('Ёѕ–');
 
-% Ёлектрическое ѕоле на поврехности 
+%% Ёлектрическое ѕоле на поврехности 
 E_surf = zeros(N, 1); 
 for m  = 1 : N
     xm = x_midle(m);
@@ -391,6 +384,8 @@ for m  = 1 : N
 figure;
 plot(n_for_graf, abs(E_surf), 'r');
 title('Ёлектрическое поле не поверхности'); 
+
+%% ѕостроение графиков
 
 % name_file = strcat('I_MIE_circl_diel_Epol_j1_', num2str(N),'.dat');
 % f01 = fopen(name_file,'w');
