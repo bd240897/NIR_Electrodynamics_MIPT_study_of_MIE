@@ -264,7 +264,7 @@ polarplot(phi_circl_rad, abs(j1), 'r',phi_circl_rad, abs(j2), 'b');
 %% ЭПР
 
 for p = 1 : 721
-    Sum_E = 0;
+    Sum_H = 0;
     phi = (p-1)/2; % угол из формулы для приведения 721 к 360 градусам
     phi_for_graf_DA(p) = (p-1)/2; % угол для графика
     
@@ -278,11 +278,11 @@ for p = 1 : 721
             xn = x_midle(n);
             zn = z_midle(n);
             
-            Sum_E = Sum_E - 1/eta2*k2/4*dx*j2(n)*exp(cx*xn+cz*zn); %% проверить! 
+            Sum_H = Sum_H - 1/eta2*k2/4*dx*j2(n)*exp(cx*xn+cz*zn); %% проверить! 
 
         end
     
-    RCS(p) = 10*log10((4/k2)*Sum_E*conj(Sum_E));
+    RCS(p) = 10*log10((4/k2)*Sum_H*conj(Sum_H));
 end
 
 % график поля в дальней зоне от угла налюденя (не нормированный)

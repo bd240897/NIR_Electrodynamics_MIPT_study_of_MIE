@@ -143,55 +143,72 @@ for m  = 1 : N
         
         if n == m
               
-        % cоставл€ющие Hy1
-        he_y1 =  +1/2;
-        hm_y1 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k1*dx/4)-1));
-        % cоставл€ющие Hy2  
-        he_y2 = -1/2;
-        hm_y2 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-        % cоставл€ющие E1u
-        fe_u12 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-        fm_u1 = + 1/2; 
-        % cоставл€ющие E2u
-        fe_u22 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-        fm_u2 = - 1/2; 
-        % cоставл€ющие E1w
-        fm_w1 = 0;
-        % cоставл€ющие E2w
-        fm_w2 = 0;
-        
+            % cоставл€ющие Hy1
+            he_y1 =  +1/2;
+            hm_y1 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k1*dx/4)-1));
+            % cоставл€ющие Hy2  
+            he_y2 = -1/2;
+            hm_y2 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
+            % cоставл€ющие E1u
+            fe_u12 = hm_y1;
+            fm_u1 = he_y1; 
+            % cоставл€ющие E2u
+            fe_u22 = hm_y2;
+            fm_u2 = he_y2; 
+            
+        elseif abs(n-m) <= -1.5
+           % ћј√Ќ»“Ќќ≈ ѕќЋ≈
+            % cоставл€ющие Hy1
+            he_y1 =  - (1i/8*wmn*k1^2*dx + 1/(2*pi)*(atan(umn_plus/wmn) - atan(umn_minus/wmn)));
+            hm_y1 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
+            + umn_plus*log(gamma*k1/2*sqrt(umn_plus^2+wmn^2))...
+            - umn_minus*log(gamma*k1/2*sqrt(umn_minus^2+wmn^2)) - dx);
+            hm_y1 = hm_y1 * 1i/4; % домножение на коэфицент
+            % cоставл€ющие Hy2  
+            he_y2 = - (1i/8*wmn*k2^2*dx + 1/(2*pi)*(atan(umn_plus/wmn) - atan(umn_minus/wmn)));
+            hm_y2 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
+            + umn_plus*log(gamma*k2/2*sqrt(umn_plus^2+wmn^2))...
+            - umn_minus*log(gamma*k2/2*sqrt(umn_minus^2+wmn^2)) - dx);
+            hm_y2 = hm_y2 * 1i/4; % домножение на коэфицент
+           % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
+            % cоставл€ющие E1u
+            fe_u12 = hm_y1;
+            fm_u1 = he_y1; 
+            % cоставл€ющие E2u
+            fe_u22 = hm_y2;
+            fm_u2 = he_y2; 
         else
+           % ћј√Ќ»“Ќќ≈ ѕќЋ≈
             % cоставл€ющие Hy1
             he_y1 = - 1i/4*k1*dx*(wmn/rmn*H(1,k1*rmn));
             hm_y1 = 1i/4*dx*H(0,k1*rmn);
             % cоставл€ющие Hy2  
             he_y2 = - 1i/4*k2*dx*(wmn/rmn*H(1,k2*rmn));
             hm_y2 = 1i/4*dx*H(0,k2*rmn);
+           % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
             % cоставл€ющие E1u
-            fe_u12 = 1i/4*dx*H(0,k1*rmn);
-            fm_u1 =  - 1i/4*k1*dx*(wmn/rmn*H(1,k1*rmn));
+            fe_u12 = hm_y1;
+            fm_u1 =  he_y1;
             % cоставл€ющие E2u
-            fe_u22 = 1i/4*dx*H(0,k2*rmn);
-            fm_u2 = - 1i/4*k2*dx*(wmn/rmn*H(1,k2*rmn)); 
-            % cоставл€ющие E1w
-            fm_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
-            % cоставл€ющие E2w
-            fm_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
+            fe_u22 = hm_y2;
+            fm_u2 = he_y2; 
         end
         
-      % магнитное поле
+      % ћј√Ќ»“Ќќ≈ ѕќЋ≈
         % cоставл€ющие H1u
         fe_u11 = - 1i/4*k1*(umn_plus/r_plus*H(1,k1*r_plus) - umn_minus/r_minus*H(1,k1*r_minus));
-        
         % cоставл€ющие H2u
         fe_u21 = - 1i/4*k2*(umn_plus/r_plus*H(1,k2*r_plus) - umn_minus/r_minus*H(1,k2*r_minus));
-        
         % cоставл€ющие H1w
         fe_w1 = - 1i/4*k1*(wmn/r_plus*H(1,k1*r_plus) - wmn/r_minus*H(1,k1*r_minus));
-        
         % cоставл€ющие H2w
         fe_w2 = - 1i/4*k2*(wmn/r_plus*H(1,k2*r_plus) - wmn/r_minus*H(1,k2*r_minus));
-               
+        % ЁЋ≈ “–»„≈— ќ≈ ѕќЋ≈
+        % cоставл€ющие E1w
+        fm_w1 = + 1i/4*(H(0,k1*r_plus) - H(0,k1*r_minus));
+        % cоставл€ющие E2w
+        fm_w2 = + 1i/4*(H(0,k2*r_plus) - H(0,k2*r_minus));
+       
 %%
         %% —ќЅ≈–≈ћ ¬—≈ ¬ћ≈—“≈
         % cоставл€ющие Hy1
@@ -347,7 +364,14 @@ for m  = 1 : N
             % электрическое поле
             he_y2 = -1/2;
             hm_y2 = 1i/4*dx*(1 + 1i*2/pi*(log(gamma*k2*dx/4)-1));
-
+        elseif abs(n-m) <= -1.5
+           % ћј√Ќ»“Ќќ≈ ѕќЋ≈
+            % cоставл€ющие Hy2  
+            he_y2 = - (1i/8*wmn*k2^2*dx + 1/(2*pi)*(atan(umn_plus/wmn) - atan(umn_minus/wmn)));
+            hm_y2 = dx + 2*1i/pi * (wmn*(atan(umn_plus/wmn) - atan(umn_minus/wmn))...
+            + umn_plus*log(gamma*k2/2*sqrt(umn_plus^2+wmn^2))...
+            - umn_minus*log(gamma*k2/2*sqrt(umn_minus^2+wmn^2)) - dx);
+            hm_y2 = hm_y2 * 1i/4; % домножение на коэфицент
         else
             % электрчиеское поле
             he_y2 = - 1i/4*k2*dx*(wmn/rmn*H(1,k2*rmn));
